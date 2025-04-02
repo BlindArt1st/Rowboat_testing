@@ -1,6 +1,8 @@
+import pytest
 from API.rowboat import Oar, Anchor, Rowboat  
 
 
+@pytest.mark.unit
 def test_oar_initial_state():
     """Тест-кейс U-1"""
     left_oar = Oar("left")
@@ -10,6 +12,7 @@ def test_oar_initial_state():
     assert right_oar.position == "idle", "Initial state of right oar is incorrect"
 
 
+@pytest.mark.unit
 def test_oar_row():
     """Тест-кейс U-2"""
     oar = Oar("left")
@@ -17,6 +20,7 @@ def test_oar_row():
     assert oar.position == "rowing", "Oar should be in 'rowing' state after calling row()"
 
 
+@pytest.mark.unit
 def test_oar_stop():
     """Тест-кейс U-3"""
     oar = Oar("right")
@@ -25,12 +29,14 @@ def test_oar_stop():
     assert oar.position == "idle", "Oar should be in 'idle' state after calling stop()"    
 
 
+@pytest.mark.unit
 def test_anchor_initial_state():
     """Тест-кейс U-4"""
     anchor = Anchor()
     assert anchor.is_dropped == False, "Anchor should be initially lifted"
 
 
+@pytest.mark.unit
 def test_anchor_drop():
     """Тест-кейс U-5"""
     anchor = Anchor()
@@ -38,6 +44,7 @@ def test_anchor_drop():
     assert anchor.is_dropped == True, "Anchor should be dropped after calling drop()"
 
 
+@pytest.mark.unit
 def test_anchor_lift():
     """Тест-кейс U-6"""
     anchor = Anchor()
@@ -46,6 +53,7 @@ def test_anchor_lift():
     assert anchor.is_dropped == False, "Anchor should be lifted after calling lift()"
 
 
+@pytest.mark.unit
 def test_seat_can_be_occupied():
     """Тест-кейс U-7"""
     boat = Rowboat()
@@ -56,6 +64,7 @@ def test_seat_can_be_occupied():
     assert boat.seats.count(False) == initial_free_seats - 1, "The number of available seats had to decrease"
 
 
+@pytest.mark.unit
 def test_seat_can_be_freed():
     """Тест-кейс U-8"""
     boat = Rowboat()
@@ -67,6 +76,7 @@ def test_seat_can_be_freed():
     assert boat.seats.count(False) == initial_free_seats + 1, "The number of available seats had to increase"
 
 
+@pytest.mark.unit
 def test_maximum_seats():
     """Тест-кейс U-9"""
     boat = Rowboat()
@@ -79,6 +89,7 @@ def test_maximum_seats():
     assert free_seats == 0, "All seats should be occupied"    
 
 
+@pytest.mark.unit
 def test_maximum_speed():
     """Тест-кейс U-10"""
     boat = Rowboat()
@@ -90,6 +101,7 @@ def test_maximum_speed():
     assert boat.speed == boat.MAX_SPEED, "Speed should not exceed MAX_SPEED"
 
 
+@pytest.mark.integration
 def test_rowing(prerequisites):
     '''Тест-кейс I-1'''
     boat = prerequisites
@@ -101,6 +113,7 @@ def test_rowing(prerequisites):
     assert boat.oars["right"].position == "rowing", "Right oar status is incorrect"
 
 
+@pytest.mark.integration
 def test_stop_rowing(prerequisites):
     '''Тест-кейс I-2'''
     boat = prerequisites
@@ -112,6 +125,7 @@ def test_stop_rowing(prerequisites):
     assert boat.oars["right"].position == "idle", "Right oar status is incorrect"
     
 
+@pytest.mark.integration
 def test_turning(prerequisites):
     '''Тест-кейс I-3'''
     boat = prerequisites
@@ -130,7 +144,8 @@ def test_turning(prerequisites):
     ), "Right oar status is incorrect"
     assert boat.direction == "left", "Direction is not 'left'"
     
-    
+
+@pytest.mark.integration   
 def test_rowing_while_anchor_is_dropped(prerequisites):
     '''Тест-кейс I-4'''
     boat = prerequisites
@@ -140,6 +155,7 @@ def test_rowing_while_anchor_is_dropped(prerequisites):
     assert boat.speed == 0, "Boat should not move when the anchor is dropped"
 
 
+@pytest.mark.integration
 def test_rowing_while_anchor_is_lifted(prerequisites):
     '''Тест-кейс I-5'''
     boat = prerequisites
@@ -150,6 +166,7 @@ def test_rowing_while_anchor_is_lifted(prerequisites):
     assert boat.speed > 0, "Boat should be able to move after anchor is raised"
 
 
+@pytest.mark.integration
 def test_steer_empty_boat(prerequisites):
     '''Тест-кейс I-6'''
     boat = prerequisites
@@ -161,7 +178,8 @@ def test_steer_empty_boat(prerequisites):
     assert boat.oars["left"].position == "idle", "Left oar status is incorrect"
     assert boat.oars["right"].position == "idle", "Right oar status is incorrect"
     
-    
+
+@pytest.mark.integration   
 def test_use_anchor_while_boat_is_empty(prerequisites):
     '''Тест-кейс I-7'''
     boat = prerequisites
@@ -177,7 +195,8 @@ def test_use_anchor_while_boat_is_empty(prerequisites):
     boat.lift_anchor()
     assert boat.anchor.is_dropped, "The anchor should not have been lifted"  
     
-    
+
+@pytest.mark.integration    
 def test_lifting_lifted_anchor(prerequisites):
     '''Тест-кейс I-8'''
     boat = prerequisites
@@ -187,7 +206,9 @@ def test_lifting_lifted_anchor(prerequisites):
     
     boat.row()
     assert boat.speed != 0, "The boat had to speed up"
-    
+
+
+@pytest.mark.integration    
 def test_dropping_dropped_anchor(prerequisites):
     '''Тест-кейс I-9'''
     boat = prerequisites
