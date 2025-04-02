@@ -49,7 +49,7 @@ class Rowboat:
         self.oars["right"].row()
         if self.speed < self.MAX_SPEED:
             self.speed += 1
-            print(f"Гребем обоими вёслами! Скорость: {self.speed}")
+            print(f"Полный вперед! Скорость: {self.speed}")
                 
     #Грести только левым веслом (поворот вправо)
     def row_left(self):
@@ -59,7 +59,7 @@ class Rowboat:
         self.oars["left"].row()
         self.oars["right"].stop()
         self.direction = "right"
-        print("Гребем левым веслом! Лодка поворачивает вправо.")
+        print("Гребем левым веслом. Лодка поворачивает вправо.")
     
     #Грести только правым веслом (поворот влево).
     def row_right(self):
@@ -69,7 +69,7 @@ class Rowboat:
         self.oars["right"].row()
         self.oars["left"].stop()
         self.direction = "left"
-        print("Гребем правым веслом! Лодка поворачивает влево.")
+        print("Гребем правым веслом. Лодка поворачивает влево.")
     
     def stop(self):
         if self.seats.count(True) == 0:
@@ -127,12 +127,5 @@ class Rowboat:
             "available_seats": self.seats.count(False)
         }
 
-# Пример использования
-if __name__ == "__main__":
-    boat = Rowboat()
-    boat.occupy_seat()
-    boat.drop_anchor()
-    boat.drop_anchor()
-    print(boat.check_status())
 
    
