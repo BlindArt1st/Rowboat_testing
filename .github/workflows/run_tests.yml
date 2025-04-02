@@ -32,7 +32,7 @@ jobs:
         run: pytest -v
       - name: unit_tests
         if: "github.event.inputs.deployment_target == 'unit_tests'"
-        run: pytest -v "unit"
+        run: pytest -v -m "unit"
       - name: integration_tests
         if: "github.event.inputs.deployment_target == 'integration_tests'"
-        run: pytest -v "integration"
+        run: pytest -v -m "integration"
