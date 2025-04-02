@@ -28,11 +28,11 @@ jobs:
       - name: install dependencies
         run: pip install -r requirements.txt
       - name: all tests
-        if: "github.event.inputs.deploymment_target == 'all'"
+        if: "github.event.inputs.deployment_target == 'all'"
         run: pytest -v
       - name: unit_tests
-        if: "github.event.inputs.deploymment_target == 'unit_tests'"
+        if: "github.event.inputs.deployment_target == 'unit_tests'"
         run: pytest -v "unit"
       - name: integration_tests
-        if: "github.event.inputs.deploymment_target == 'integration_tests'"
+        if: "github.event.inputs.deployment_target == 'integration_tests'"
         run: pytest -v "integration"
