@@ -23,7 +23,7 @@ class Anchor:
 
 class Rowboat:
     MAX_SEATS = 3  
-    
+    MAX_SPEED = 4
     def __init__(self, seats_count=3):
         if seats_count > self.MAX_SEATS:
             raise ValueError(f"Максимальное количество мест в лодке: {self.MAX_SEATS}")
@@ -42,15 +42,19 @@ class Rowboat:
         if self.anchor.is_dropped:
             print("Нельзя грести, пока якорь опущен!")
             return
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
+            return
         self.oars["left"].row()
         self.oars["right"].row()
-        self.speed += 1
-        print(f"Гребем обоими вёслами! Скорость: {self.speed}")
-    
+        if self.speed < self.MAX_SPEED:
+            self.speed += 1
+            print(f"Гребем обоими вёслами! Скорость: {self.speed}")
+                
     #Грести только левым веслом (поворот вправо)
     def row_left(self):
-        if self.anchor.is_dropped:
-            print("Нельзя грести, пока якорь опущен!")
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
             return
         self.oars["left"].row()
         self.oars["right"].stop()
@@ -59,8 +63,8 @@ class Rowboat:
     
     #Грести только правым веслом (поворот влево).
     def row_right(self):
-        if self.anchor.is_dropped:
-            print("Нельзя грести, пока якорь опущен!")
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
             return
         self.oars["right"].row()
         self.oars["left"].stop()
@@ -68,16 +72,29 @@ class Rowboat:
         print("Гребем правым веслом! Лодка поворачивает влево.")
     
     def stop(self):
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
+            return
         self.speed = 0
         self.oars["left"].stop()
         self.oars["right"].stop()
-        print("Лодка остановилась.")
+        print("Он не гребет и огребет.")
     
     def drop_anchor(self):
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
+            return
+        if self.anchor.is_dropped == True:
+            return
         self.stop()
         self.anchor.drop()
     
     def lift_anchor(self):
+        if self.seats.count(True) == 0:
+            print("Некому управлять лодкой")
+            return
+        if self.anchor.is_dropped == False:
+            return
         self.anchor.lift()
         
     #Занять любое свободное место в лодке
@@ -88,6 +105,7 @@ class Rowboat:
                 print(f"Место занято. Свободных мест осталось: {self.seats.count(False)}")
                 return
         print("Все места заняты!")
+        
     #Освободить любое занятое место в лодке
     def free_seat(self):
         for i in range(len(self.seats)):
@@ -113,18 +131,8 @@ class Rowboat:
 if __name__ == "__main__":
     boat = Rowboat()
     boat.occupy_seat()
-    print(boat.check_status())
-    boat.occupy_seat()
-    print(boat.check_status())
-    boat.free_seat()
-    print(boat.check_status())
-    boat.row()
     boat.drop_anchor()
-    boat.row()
-    boat.lift_anchor()
-    boat.row_left()
-    boat.row_right()
-    boat.stop()
     boat.drop_anchor()
-    boat.lift_anchor()
     print(boat.check_status())
+
+   
